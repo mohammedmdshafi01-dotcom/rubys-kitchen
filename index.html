@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ruby’s Cloud Kitchen · Austin Town, Bangalore</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="#top" class="brand">Ruby’s <span>Cloud Kitchen</span></a>
+    <button class="cart-btn" id="openCart" aria-label="Open your order">
+      Your order <span class="cart-count" id="cartCount">0</span>
+    </button>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-text">
+        <p class="hero-place">Austin Town, Bangalore</p>
+        <h1>Home-style food, cooked when you order it.</h1>
+        <p class="hero-sub">No dining room, just a kitchen. Everything is made fresh and delivered within 5 km of Austin Town in about 35 minutes.</p>
+        <a href="#menu" class="btn btn-primary">See the menu</a>
+      </div>
+      <div class="hero-side">
+      <img class="hero-img" src="hero.svg" alt="A plate of Ruby’s chicken dum biryani" width="600" height="400">
+      <dl class="hero-facts">
+        <div><dt>Open</dt><dd>11:00 am – 11:00 pm, daily</dd></div>
+        <div><dt>Delivery</dt><dd>₹40 · free above ₹499</dd></div>
+        <div><dt>Pay</dt><dd>UPI, card or cash on delivery</dd></div>
+      </dl>
+      </div>
+    </section>
+
+    <section class="menu-section" id="menu">
+      <div class="menu-head">
+        <h2>Menu</h2>
+        <div class="controls">
+          <input type="search" id="search" placeholder="Search dishes" aria-label="Search dishes">
+          <label class="veg-toggle">
+            <input type="checkbox" id="vegOnly"> Veg only
+          </label>
+        </div>
+      </div>
+      <div class="tabs" id="tabs" role="tablist" aria-label="Menu categories"></div>
+      <div class="menu-grid" id="menuGrid"></div>
+      <p class="empty" id="emptyMsg" hidden>No dishes match. Clear the search or the veg filter.</p>
+    </section>
+
+    <section class="visit" id="contact">
+      <h2>Find us</h2>
+      <p>Ruby’s Cloud Kitchen, Austin Town, Bangalore, Karnataka.<br>
+      This is a delivery-only kitchen, so there is no walk-in service.</p>
+      <p>Orders and queries: <a href="tel:+910000000000">+91 00000 00000</a></p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    © <span id="year"></span> Ruby’s Cloud Kitchen, Austin Town, Bangalore
+  </footer>
+
+  <!-- Cart drawer -->
+  <div class="overlay" id="overlay" hidden></div>
+  <aside class="drawer" id="drawer" aria-label="Your order" aria-hidden="true">
+    <div class="drawer-head">
+      <h2>Your order</h2>
+      <button class="icon-btn" id="closeCart" aria-label="Close">✕</button>
+    </div>
+
+    <div class="drawer-body" id="cartView">
+      <ul class="cart-list" id="cartList"></ul>
+      <p class="empty" id="cartEmpty">Your order is empty. Add a dish from the menu.</p>
+    </div>
+
+    <div class="drawer-foot" id="cartFoot">
+      <dl class="totals">
+        <div><dt>Items</dt><dd id="subtotal">₹0</dd></div>
+        <div><dt>GST (5%)</dt><dd id="tax">₹0</dd></div>
+        <div><dt>Delivery</dt><dd id="delivery">₹0</dd></div>
+        <div class="grand"><dt>Total</dt><dd id="total">₹0</dd></div>
+      </dl>
+      <button class="btn btn-primary btn-block" id="toCheckout" disabled>Continue to delivery details</button>
+    </div>
+
+    <!-- Checkout -->
+    <form class="drawer-body checkout" id="checkoutForm" hidden novalidate>
+      <button type="button" class="link-btn" id="backToCart">Back to order</button>
+      <h3>Delivery details</h3>
+
+      <label>Name
+        <input type="text" name="name" required autocomplete="name">
+        <small class="err"></small>
+      </label>
+      <label>Mobile number
+        <input type="tel" name="phone" required inputmode="numeric" maxlength="10" placeholder="10-digit number" autocomplete="tel-national">
+        <small class="err"></small>
+      </label>
+      <label>Address
+        <textarea name="address" rows="3" required placeholder="House no., street, landmark"></textarea>
+        <small class="err"></small>
+      </label>
+      <label>Pincode
+        <input type="text" name="pincode" required inputmode="numeric" maxlength="6" placeholder="560047">
+        <small class="err"></small>
+      </label>
+      <label>Cooking notes (optional)
+        <input type="text" name="notes" placeholder="Less spicy, no onion…">
+      </label>
+
+      <fieldset>
+        <legend>Payment</legend>
+        <label class="radio"><input type="radio" name="pay" value="UPI" checked> UPI on delivery</label>
+        <label class="radio"><input type="radio" name="pay" value="Card"> Card on delivery</label>
+        <label class="radio"><input type="radio" name="pay" value="Cash"> Cash on delivery</label>
+      </fieldset>
+
+      <button type="submit" class="btn btn-primary btn-block">Place order · <span id="payTotal">₹0</span></button>
+    </form>
+
+    <!-- Confirmation -->
+    <div class="drawer-body confirm" id="confirmView" hidden>
+      <h3>Order placed</h3>
+      <p>Thank you, <strong id="cName"></strong>. Order <strong id="cId"></strong> is with the kitchen.</p>
+      <p>Expect it in about <strong>35 minutes</strong>. We will call <span id="cPhone"></span> if we need anything.</p>
+      <button class="btn btn-primary btn-block" id="newOrder">Back to menu</button>
+    </div>
+  </aside>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
